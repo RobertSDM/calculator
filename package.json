@@ -5,10 +5,10 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles dist/",
+        "test:unit:coverage": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --coverage dist/tests/unit/",
+        "test:unit": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --watch --coverage dist/tests/unit/",
         "start": "tsc --watch",
-        "build": "tsc --build --verbose",
-        "build:force": "tsc --build --force --verbose"
+        "build": "tsc --build --verbose"
     },
     "keywords": [],
     "author": "",

@@ -84,12 +84,12 @@ body {
 }
 
 #__calc {
-    color: var(--calc-color);
+    color: white;
+    font-size: 2rem;
 }
 
 #__result {
-    color: white;
-    font-size: 2rem;
+    color: var(--calc-color);
 }
 
 /* 
