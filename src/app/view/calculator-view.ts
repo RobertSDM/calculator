@@ -14,7 +14,7 @@ export default class CalculatorView {
 
     constructor() {}
 
-    public clear(restart = false) {
+    public clear(restart: boolean) {
         if (restart) {
             this._firstValue = "";
             this._operation = "";

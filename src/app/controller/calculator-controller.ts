@@ -8,8 +8,6 @@ class CalculatorController {
     private keyboard = new Keyboard();
 
     constructor() {
-        this.view.addNumber(this.calc.currentValue, 0);
-        this.view.updateResult(0);
         this.keyboard.addEventListener("NUMBER", this.eventNumber.bind(this));
         this.keyboard.addEventListener(
             "OPERATION",
@@ -19,12 +17,38 @@ class CalculatorController {
             "FUNCTION",
             this.eventFunction.bind(this)
         );
+        this.keyboard.addEventListener(
+            "KEYBOARD",
+            this.handleEventKeyboard.bind(this)
+        );
     }
 
-    private eventOperator(event: MouseEvent) {
-        const targetElement = event.target as HTMLElement;
-        const operation = targetElement.dataset.operator!;
+    private handleEventKeyboard(key: string) {
+        if (key === "Enter") {
+            const result = this.calc.executeOperation();
+            this.view.clear(true);
+            this.view.addNumber(this.calc.currentValue, result);
+            return;
+        }
+        if (["+", "-", "*", "÷", "%", "="].includes(key)) {
+            this.eventOperator(key);
+            return;
+        }
+        if (key === "Delete") {
+            this.eventFunction("CE");
+            return;
+        } else if (key === ".") {
+            this.eventFunction(key);
+            return;
+        } else if (key === "ctrl + Delete") {
+            this.eventFunction("C");
+            return;
+        }
+        const intNumber = parseInt(key);
+        this.eventNumber(intNumber);
+    }
 
+    private eventOperator(operation: string) {
         switch (operation) {
             case "=":
                 const result = this.calc.executeOperation();
@@ -50,32 +74,20 @@ class CalculatorController {
             this.calc.addOperator(operation);
             this.view.addOperator(operation);
         } else {
-            console.log("Primeiro: " + this.calc.firstValue);
             this.calc.addOperator(operation);
             this.view.addOperator(operation);
-            console.log("Primeiro: " + this.calc.firstValue);
         }
-        console.log(this.calc.secondValue);
-        console.log("Valor atual: " + this.calc.currentValue);
     }
 
-    private eventNumber(event: MouseEvent) {
-        const targetElement = event.target as HTMLElement;
-        const number = parseFloat(targetElement.dataset.number as string);
-
-        const lastValue = this.calc.addNumber(number) as number;
+    private eventNumber(number: number) {
+        let lastValue;
+        lastValue = this.calc.addNumber(number) as number;
         this.view.addNumber(this.calc.currentValue, lastValue);
-
-        console.log(this.calc.secondValue);
-
         const result = this.calc.executeOperation(false);
         this.view.updateResult(result);
     }
 
-    private eventFunction(event: MouseEvent) {
-        const targetElement = event.target as HTMLElement;
-        const func = targetElement.dataset.func;
-
+    private eventFunction(func: string) {
         switch (func) {
             case "C":
                 this.calc.clear(true);

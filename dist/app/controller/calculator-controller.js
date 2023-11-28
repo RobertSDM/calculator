@@ -6,15 +6,38 @@ class CalculatorController {
         this.calc = new Calculator();
         this.view = new CalculatorView();
         this.keyboard = new Keyboard();
-        this.view.addNumber(this.calc.currentValue, 0);
-        this.view.updateResult(0);
         this.keyboard.addEventListener("NUMBER", this.eventNumber.bind(this));
         this.keyboard.addEventListener("OPERATION", this.eventOperator.bind(this));
         this.keyboard.addEventListener("FUNCTION", this.eventFunction.bind(this));
+        this.keyboard.addEventListener("KEYBOARD", this.handleEventKeyboard.bind(this));
     }
-    eventOperator(event) {
-        const targetElement = event.target;
-        const operation = targetElement.dataset.operator;
+    handleEventKeyboard(key) {
+        if (key === "Enter") {
+            const result = this.calc.executeOperation();
+            this.view.clear(true);
+            this.view.addNumber(this.calc.currentValue, result);
+            return;
+        }
+        if (["+", "-", "*", "÷", "%", "="].includes(key)) {
+            this.eventOperator(key);
+            return;
+        }
+        if (key === "Delete") {
+            this.eventFunction("CE");
+            return;
+        }
+        else if (key === ".") {
+            this.eventFunction(key);
+            return;
+        }
+        else if (key === "ctrl + Delete") {
+            this.eventFunction("C");
+            return;
+        }
+        const intNumber = parseInt(key);
+        this.eventNumber(intNumber);
+    }
+    eventOperator(operation) {
         switch (operation) {
             case "=":
                 const result = this.calc.executeOperation();
@@ -38,26 +61,18 @@ class CalculatorController {
             this.view.addOperator(operation);
         }
         else {
-            console.log("Primeiro: " + this.calc.firstValue);
             this.calc.addOperator(operation);
             this.view.addOperator(operation);
-            console.log("Primeiro: " + this.calc.firstValue);
         }
-        console.log(this.calc.secondValue);
-        console.log("Valor atual: " + this.calc.currentValue);
     }
-    eventNumber(event) {
-        const targetElement = event.target;
-        const number = parseFloat(targetElement.dataset.number);
-        const lastValue = this.calc.addNumber(number);
+    eventNumber(number) {
+        let lastValue;
+        lastValue = this.calc.addNumber(number);
         this.view.addNumber(this.calc.currentValue, lastValue);
-        console.log(this.calc.secondValue);
         const result = this.calc.executeOperation(false);
         this.view.updateResult(result);
     }
-    eventFunction(event) {
-        const targetElement = event.target;
-        const func = targetElement.dataset.func;
+    eventFunction(func) {
         switch (func) {
             case "C":
                 this.calc.clear(true);

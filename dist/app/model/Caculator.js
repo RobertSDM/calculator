@@ -18,7 +18,6 @@ class Calculator {
     addOperator(operator) {
         if (this._firstValue === null)
             return;
-        console.log("Passou: " + operator);
         this._operation = operator;
         this._isNegative = false;
         this._currentValue = "SECOND";
@@ -62,7 +61,7 @@ class Calculator {
                 this.turnDecimal(number);
                 return this._secondValue;
             }
-            this._secondValue = parseFloat(`${(_a = this._secondValue) !== null && _a !== void 0 ? _a : ""}${number}`);
+            this._secondValue = parseFloat(`${(_a = this._secondValue) !== null && _a !== void 0 ? _a : 0}${number}`);
             return this._secondValue;
         }
         else {
@@ -105,10 +104,6 @@ class Calculator {
         return (b * a) / 100;
     }
     clear(restart = false) {
-        // TODO: comment what does that is doing!!
-        if (!this.secondValue) {
-            restart = true;
-        }
         if (restart) {
             this._firstValue = null;
             this._operation = "";

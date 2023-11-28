@@ -12,7 +12,7 @@ export default class CalculatorView {
         this._operation = "";
         this._result = "";
     }
-    clear(restart = false) {
+    clear(restart) {
         if (restart) {
             this._firstValue = "";
             this._operation = "";

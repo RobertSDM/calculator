@@ -6,23 +6,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import getDOMElement from "../../decorators/get-DOM-element.js";
 class Keyboard {
+    handleKeyDown(event) { }
     addEventListener(btnType, callback) {
         switch (btnType) {
             case "FUNCTION":
                 this.functionsBtn.forEach((button) => button.addEventListener("click", function (event) {
-                    callback(event);
+                    const targetElement = event.target;
+                    const func = targetElement.dataset.func;
+                    callback(func);
                 }));
                 break;
             case "NUMBER":
                 this.numbersBtn.forEach((button) => button.addEventListener("click", function (event) {
-                    callback(event);
+                    const targetElement = event.target;
+                    const number = parseFloat(targetElement.dataset.number);
+                    callback(number);
                 }));
                 break;
             case "OPERATION":
                 this.operationsBtn.forEach((button) => button.addEventListener("click", function (event) {
-                    callback(event);
+                    const targetElement = event.target;
+                    const operation = targetElement.dataset.operator;
+                    callback(operation);
                 }));
                 break;
+            case "KEYBOARD":
+                window.onkeydown = (event) => {
+                    if (event.key.match(/^(?:[0-9]|Numpad[0-9]|Enter|[+\-*÷%=]|Delete|\.)$/)) {
+                        event.preventDefault();
+                        if (event.ctrlKey && event.key === "Delete") {
+                            callback("ctrl + Delete");
+                        }
+                        callback(event.key);
+                    }
+                };
         }
     }
     get operators() {
