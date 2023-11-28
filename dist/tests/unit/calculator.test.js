@@ -1,4 +1,4 @@
-import { Calculator } from "../../app/model/caculator";
+import Calculator from "../../app/model/caculator.js";
 describe("Testing the class Calculator", () => {
     let calculator;
     beforeEach(() => {

@@ -1,4 +1,4 @@
-export class Calculator {
+class Calculator {
     private _currentValue: "FIRST" | "SECOND" = "FIRST";
     private _firstValue: number = 0;
     private _operation: string = "";
@@ -7,6 +7,7 @@ export class Calculator {
     private _isDecimal: boolean = false;
     private _isNegative: boolean = false;
     private _operations: Record<string, Function>;
+
     constructor() {
         this._operations = {
             "+": this.sum,
@@ -149,3 +150,5 @@ export class Calculator {
         return this._isDecimal;
     }
 }
+
+export default Calculator;

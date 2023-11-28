@@ -1,4 +1,4 @@
-export class Calculator {
+class Calculator {
     constructor() {
         this._currentValue = "FIRST";
         this._firstValue = 0;
@@ -130,3 +130,4 @@ export class Calculator {
         return this._isDecimal;
     }
 }
+export default Calculator;

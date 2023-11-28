@@ -1,7 +1,4 @@
-export default function getDOMElement(
-    elementSelector: string,
-    getNodeList = true
-) {
+function getDOMElement(elementSelector: string, getNodeList = true) {
     return function (target: any, propertyName: string): void {
         let element: NodeList | HTMLElement;
 
@@ -18,6 +15,9 @@ export default function getDOMElement(
 
             return element;
         };
+
         Object.defineProperty(target, propertyName, { get: getElement });
     };
 }
+
+export default getDOMElement;
