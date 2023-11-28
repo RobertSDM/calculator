@@ -4,8 +4,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import getDOMElement from "../../decorators/get-DOM-element";
+import getDOMElement from "../../decorators/get-DOM-element.js";
 class Keyboard {
+    addEventListener(btnType, callback) {
+        switch (btnType) {
+            case "FUNCTION":
+                this.functionsBtn.forEach((button) => button.addEventListener("click", function (event) {
+                    callback(event);
+                }));
+                break;
+            case "NUMBER":
+                this.numbersBtn.forEach((button) => button.addEventListener("click", function (event) {
+                    callback(event);
+                }));
+                break;
+            case "OPERATION":
+                this.operationsBtn.forEach((button) => button.addEventListener("click", function (event) {
+                    callback(event);
+                }));
+                break;
+        }
+    }
     get operators() {
         return this.operationsBtn;
     }
@@ -25,3 +44,4 @@ __decorate([
 __decorate([
     getDOMElement("[data-number]")
 ], Keyboard.prototype, "numbersBtn", void 0);
+export default Keyboard;

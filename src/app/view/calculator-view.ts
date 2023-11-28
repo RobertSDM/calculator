@@ -1,15 +1,12 @@
 import getDOMElement from "../../decorators/get-DOM-element.js";
 
 export default class CalculatorView {
-    private _calcEl: HTMLElement = document.querySelector(
-        "#__calc"
-    ) as HTMLElement;
+    @getDOMElement("#__calc", false)
+    private _calcEl!: HTMLElement;
 
-    private _resultEl: HTMLElement = document.querySelector(
-        "#__result"
-    ) as HTMLElement;
+    @getDOMElement("#__result", false)
+    private _resultEl!: HTMLElement;
 
-    private _currentValue: "FIRST" | "SECOND" = "FIRST";
     private _firstValue: string = "";
     private _secondValue: string = "";
     private _operation: string = "";
@@ -21,65 +18,53 @@ export default class CalculatorView {
         if (restart) {
             this._firstValue = "";
             this._operation = "";
-            this._currentValue = "FIRST";
             this._result = "";
         }
 
         this._secondValue = "";
+        this.updateCalcEl();
+        this.updateResult(this._result);
     }
 
     public addOperator(operator: string) {
+        if (this._firstValue === "") return;
         this._operation = operator;
-        this.changeCurrentValue();
         this.updateCalcEl();
     }
 
-    public addNegativeIndication() {
-        if (this._currentValue === "FIRST") {
-            this.updateValues(false, `-`);
-        } else {
-            this.updateValues(false, this._firstValue, `-`);
+    public addNegativeIndication(currentValue: "FIRST" | "SECOND") {
+        if (currentValue === "FIRST") {
+            this._firstValue = `-${this._firstValue}`;
         }
+        this.updateCalcEl();
     }
 
-    public addDecimalIndication() {
-        if ((this._currentValue = "FIRST")) {
-            this.updateValues(false, `${this._firstValue}.`);
+    public addDecimalIndication(currentValue: "FIRST" | "SECOND") {
+        if (currentValue === "FIRST") {
+            this._firstValue = `${this._firstValue}.`;
         } else {
-            this.updateValues(false, this._firstValue, `${this._secondValue}.`);
+            this._secondValue = `${this._secondValue}.`;
         }
-    }
-
-    private changeCurrentValue() {
-        this._currentValue === "FIRST"
-            ? (this._currentValue = "SECOND")
-            : (this._currentValue = "FIRST");
+        this.updateCalcEl();
     }
 
     private updateCalcEl() {
         const calcString = `${this._firstValue} ${this._operation} ${this._secondValue}`;
-        console.log(this._calcEl);
         this._calcEl.innerHTML = calcString;
     }
 
-    public updateResult(result: number) {
+    public updateResult(result: number | string) {
         this._result = result.toString();
         this._resultEl.innerHTML = result.toString();
     }
 
-    public updateValues(
-        changeCurrentValue: boolean,
-        firstValue?: number | string,
-        secondValue?: number | string
-    ) {
-        if (changeCurrentValue) this.changeCurrentValue();
-        this._firstValue = firstValue?.toString() ?? this._firstValue;
-        this._secondValue = secondValue?.toString() ?? this._secondValue;
+    public addNumber(currentValue: "FIRST" | "SECOND", number: number) {
+        if (currentValue === "FIRST") {
+            this._firstValue = number.toString();
+        } else {
+            this._secondValue = number.toString();
+        }
         this.updateCalcEl();
-    }
-
-    get currentValue() {
-        return this._currentValue;
     }
 
     get firstValue() {
@@ -92,5 +77,9 @@ export default class CalculatorView {
 
     get operation() {
         return this._operation;
+    }
+
+    get result() {
+        return this._result;
     }
 }

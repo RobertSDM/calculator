@@ -69,6 +69,8 @@ body {
     flex-direction: column;
     align-items: end;
     padding: 1.2rem 0.5rem;
+    height: 7rem;
+    overflow-x: hidden;
 }
 
 .__screen > span {

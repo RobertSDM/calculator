@@ -1,8 +1,12 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import getDOMElement from "../../decorators/get-DOM-element.js";
 export default class CalculatorView {
     constructor() {
-        this._calcEl = document.querySelector("#__calc");
-        this._resultEl = document.querySelector("#__result");
-        this._currentValue = "FIRST";
         this._firstValue = "";
         this._secondValue = "";
         this._operation = "";
@@ -12,56 +16,49 @@ export default class CalculatorView {
         if (restart) {
             this._firstValue = "";
             this._operation = "";
-            this._currentValue = "FIRST";
             this._result = "";
         }
         this._secondValue = "";
+        this.updateCalcEl();
+        this.updateResult(this._result);
     }
     addOperator(operator) {
+        if (this._firstValue === "")
+            return;
         this._operation = operator;
-        this.changeCurrentValue();
         this.updateCalcEl();
     }
-    addNegativeIndication() {
-        if (this._currentValue === "FIRST") {
-            this.updateValues(false, `-`);
+    addNegativeIndication(currentValue) {
+        if (currentValue === "FIRST") {
+            this._firstValue = `-${this._firstValue}`;
+        }
+        this.updateCalcEl();
+    }
+    addDecimalIndication(currentValue) {
+        if (currentValue === "FIRST") {
+            this._firstValue = `${this._firstValue}.`;
         }
         else {
-            this.updateValues(false, this._firstValue, `-`);
+            this._secondValue = `${this._secondValue}.`;
         }
-    }
-    addDecimalIndication() {
-        if ((this._currentValue = "FIRST")) {
-            this.updateValues(false, `${this._firstValue}.`);
-        }
-        else {
-            this.updateValues(false, this._firstValue, `${this._secondValue}.`);
-        }
-    }
-    changeCurrentValue() {
-        this._currentValue === "FIRST"
-            ? (this._currentValue = "SECOND")
-            : (this._currentValue = "FIRST");
+        this.updateCalcEl();
     }
     updateCalcEl() {
         const calcString = `${this._firstValue} ${this._operation} ${this._secondValue}`;
-        console.log(this._calcEl);
         this._calcEl.innerHTML = calcString;
     }
     updateResult(result) {
         this._result = result.toString();
         this._resultEl.innerHTML = result.toString();
     }
-    updateValues(changeCurrentValue, firstValue, secondValue) {
-        var _a, _b;
-        if (changeCurrentValue)
-            this.changeCurrentValue();
-        this._firstValue = (_a = firstValue === null || firstValue === void 0 ? void 0 : firstValue.toString()) !== null && _a !== void 0 ? _a : this._firstValue;
-        this._secondValue = (_b = secondValue === null || secondValue === void 0 ? void 0 : secondValue.toString()) !== null && _b !== void 0 ? _b : this._secondValue;
+    addNumber(currentValue, number) {
+        if (currentValue === "FIRST") {
+            this._firstValue = number.toString();
+        }
+        else {
+            this._secondValue = number.toString();
+        }
         this.updateCalcEl();
-    }
-    get currentValue() {
-        return this._currentValue;
     }
     get firstValue() {
         return this._firstValue;
@@ -72,4 +69,13 @@ export default class CalculatorView {
     get operation() {
         return this._operation;
     }
+    get result() {
+        return this._result;
+    }
 }
+__decorate([
+    getDOMElement("#__calc", false)
+], CalculatorView.prototype, "_calcEl", void 0);
+__decorate([
+    getDOMElement("#__result", false)
+], CalculatorView.prototype, "_resultEl", void 0);

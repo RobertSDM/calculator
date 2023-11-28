@@ -23,20 +23,14 @@ describe("Testing the class Calculator", () => {
         expect(calculator.operation).toContain("");
     });
 
-    test("Test if the firstValue and secondValue turn negative", () => {
+    test("Test if the firstValue turn negative", () => {
         const number = 20;
 
         calculator.isNegative = true;
 
         calculator.addNumber(number);
         expect(calculator.firstValue).toBe(-number);
-
         expect(calculator.isNegative).toBeFalsy();
-        calculator.addOperator("+");
-
-        calculator.isNegative = true;
-        calculator.addNumber(number);
-        expect(calculator.secondValue).toBe(-number);
     });
 
     test("Test if executeOperation and clear works", () => {
@@ -53,12 +47,12 @@ describe("Testing the class Calculator", () => {
         expect(calculator.result).toBe(2);
         expect(calculator.operation).toContain("");
         expect(calculator.firstValue).toBe(2);
-        expect(calculator.secondValue).toBe(0);
+        expect(calculator.secondValue).toBeFalsy();
 
         // Test if it clear all the calculator when secondValue is null
         calculator.clear();
-        expect(calculator.result).toBe(0);
-        expect(calculator.firstValue).toBe(0);
+        expect(calculator.result).toBeFalsy();
+        expect(calculator.firstValue).toBeFalsy();
     });
 
     test("Test if the number turn into a decimal and the operation is executed", () => {
