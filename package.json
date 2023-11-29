@@ -7,8 +7,8 @@
     "scripts": {
         "test:unit:coverage": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --coverage dist/tests/unit/",
         "test:unit": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --watch --coverage dist/tests/unit/",
-        "start": "tsc --watch",
-        "build": "tsc --build --verbose"
+        "start": "npx tsc --watch",
+        "build": "npx tsc --build --verbose"
     },
     "keywords": [],
     "author": "",
