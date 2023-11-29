@@ -9,11 +9,6 @@
 
 > To install you will need to have git, npm and node.js pre installed
 
-**:**
-
-```bash
-https://github.com/RobertSDM/calculator.git
-```
 
 **First copie the github repositorie, and in a terminal run the command:\*\***
 
