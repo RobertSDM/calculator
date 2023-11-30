@@ -5,6 +5,9 @@
 > -   All functions a commun calculator has
 > -   Simple and usefull
 
+The project is running at: <a href="https://calculator-641m.onrender.com/" target="_blank">calculator</a>
+
+
 ## Getting Started
 
 > To install you will need to have git, npm and node.js pre installed
